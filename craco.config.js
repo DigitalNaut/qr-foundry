@@ -1,3 +1,6 @@
+// Source: https://react-pdf.org/advanced#webpack-config
+// Related: https://github.com/diegomura/react-pdf/issues/1926#issuecomment-1180228351
+
 const webpack = require("webpack");
 
 module.exports = {
