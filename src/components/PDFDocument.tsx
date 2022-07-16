@@ -1,3 +1,5 @@
+// Source: https://blog.logrocket.com/generating-pdfs-react/
+
 import {
   Document,
   Page,
@@ -31,7 +33,7 @@ const createStyles = () =>
   });
 
 // Create Document Component
-function BasicDocument() {
+export default function BasicDocument() {
   const [styles, setStyles] = useState(createStyles());
 
   useLayoutEffect(() => {
@@ -62,4 +64,3 @@ function BasicDocument() {
     </PDFViewer>
   );
 }
-export default BasicDocument;
