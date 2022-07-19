@@ -40,7 +40,7 @@ function App() {
   }, [pageOptions.imageCount]);
 
   return (
-    <div className="App">
+    <div className="flex">
       <ControlPanel
         qrOptions={qrOptions}
         setQrOptions={setQrOptions}

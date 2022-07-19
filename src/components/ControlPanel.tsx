@@ -78,7 +78,7 @@ export default function ControlPanel({
   }, [internalPageOptions, internalQrOptions, setPageOptions, setQrOptions]);
 
   return (
-    <div className="Panel">
+    <div className="w-1/5 h-screen p-4 overflow-y-auto">
       <h2>Opciones</h2>
       <div className="Options">
         <h3>Página</h3>
@@ -101,7 +101,7 @@ export default function ControlPanel({
           />
         </label>
       </div>
-      <div className="Options">
+      <div className="flex flex-col gap-2">
         <h3>Código QR</h3>
         <label htmlFor="width">
           Ancho (px)
@@ -130,7 +130,7 @@ export default function ControlPanel({
             onChange={handleChangeQrOptions}
           />
         </label>
-        <fieldset>
+        <fieldset className="flex gap-4">
           <legend>Colores</legend>
           <label htmlFor="dark">
             Texto
