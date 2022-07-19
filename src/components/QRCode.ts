@@ -1,15 +1,12 @@
-// import { Canvg } from "canvg";
-import QRCode from "qrcode";
+import QRCode, { QRCodeRenderersOptions } from "qrcode";
 
-export default async function CreateQRImage(content: string, width: number) {
+export default function createQRImage(
+  content: string,
+  options: QRCodeRenderersOptions
+) {
   try {
-    const options: QRCode.QRCodeRenderersOptions = {
-      width: width,
-    };
-    const newQRCode = await QRCode.toCanvas(content, options);
-    return newQRCode.toDataURL();
+    return QRCode.toDataURL(content, options);
   } catch (error) {
     console.error(error);
-    return null;
   }
 }

@@ -11,7 +11,8 @@ import {
 } from "@react-pdf/renderer";
 import { useEffect, useLayoutEffect, useState } from "react";
 import type { Style } from "@react-pdf/types/style";
-import CreateQRImage from "./QRCode";
+import createQRImage from "./QRCode";
+import { QRCodeRenderersOptions } from "qrcode";
 
 const vw = () =>
   Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
@@ -24,6 +25,7 @@ const createStyles: () => Record<string, Style> = () =>
     viewer: {
       width: vw(), //the pdf viewer will take up all of the width and height
       height: vh(),
+      boxSizing: "border-box",
     },
     page: {
       marginTop: 10,
@@ -45,24 +47,31 @@ const createStyles: () => Record<string, Style> = () =>
       alignItems: "center",
     },
     caption: {
+      marginBottom: 3,
       fontSize: 9,
+    },
+    break: {
+      width: "100%",
+      height: "5em",
+      backgroundColor: "#333",
     },
   });
 
 type BasicDocumentProps = {
   title: string;
-  qrCodeSize: number;
   qrCodes: string[];
+  qrOptions: QRCodeRenderersOptions;
 };
 
 // Create Document Component
 export default function BasicDocument({
   title,
-  qrCodeSize,
   qrCodes,
+  qrOptions,
 }: BasicDocumentProps) {
   const [styles, setStyles] = useState(createStyles());
-  const [qrImages, setQRImages] = useState<string[]>();
+  const [qrImages, setQRImages] =
+    useState<Awaited<ReturnType<typeof createQRImage>>[]>();
 
   useLayoutEffect(() => {
     window.onresize = () => {
@@ -75,16 +84,16 @@ export default function BasicDocument({
   }, []);
 
   useEffect(() => {
-    (async function createQRCode() {
+    (async function createQRCodes() {
       const imageCodes = await Promise.all(
         qrCodes.map((code) => {
-          return CreateQRImage(code, qrCodeSize);
+          return createQRImage(code, qrOptions);
         })
       );
 
       setQRImages(imageCodes);
     })();
-  }, [qrCodes, qrCodeSize]);
+  }, [qrCodes, qrOptions]);
 
   return (
     <PDFViewer style={styles.viewer}>
@@ -95,19 +104,24 @@ export default function BasicDocument({
           <View style={styles.section}>
             <Text>{title}</Text>
           </View>
+
           <View style={styles.section}>
             {qrImages?.map((image, index) => {
-              return (
-                <View style={styles.image}>
-                  <Image
-                    src={image}
-                    style={{
-                      width: qrCodeSize,
-                    }}
-                  />
-                  <Text style={styles.caption}>{qrCodes[index]}</Text>
-                </View>
-              );
+              const code = qrCodes[index];
+              if (!image) return null;
+              else
+                return (
+                  <View style={styles.image} key={code}>
+                    <Image
+                      src={image}
+                      style={{
+                        width: qrOptions.width,
+                      }}
+                    />
+                    <Text style={styles.caption}>{code}</Text>
+                    <View style={styles.break} />
+                  </View>
+                );
             })}
           </View>
         </Page>
