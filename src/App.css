@@ -1,3 +1,27 @@
 .App {
-  text-align: center;
+  display: flex;
+}
+
+.Panel {
+  width: 20vmax;
+  height: 100vh;
+
+  padding: 1em;
+  overflow-y: auto;
+}
+
+.Options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+}
+
+fieldset {
+  display: flex;
+  gap: 1em;
 }
