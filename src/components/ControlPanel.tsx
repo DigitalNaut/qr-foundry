@@ -10,48 +10,26 @@ import {
 } from "react";
 import { QRCodeRenderersOptions } from "qrcode";
 
-import { DocumentOptions } from "App";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faQrcode, faSpinner } from "@fortawesome/free-solid-svg-icons";
-import InputField, { labelStyle } from "./InputField";
-import { colorValidator, numberValidator, stringValidator } from "validations";
+import InputField from "./InputField";
+import {
+  colorExp,
+  colorValidator,
+  numberExp,
+  numberValidator,
+  stringExp,
+  stringValidator,
+} from "validations";
 import ReactPDF from "@react-pdf/renderer";
-
-const h1style = "text-blue-600 font-bold text-2xl text-center";
-const h2style = "text-slate-500 font-bold text-lg";
-const h3style = "text-blue-600 font-bold";
-const sectionStyle = "flex flex-col gap-2";
-const colorPickerInputStyle = "w-full h-10";
-const colorPickerLabelStyle = "uppercase";
-const fieldsetStyle = "flex border border-solid border-slate-300 p-3 gap-2";
-const fieldsetLegendStyle = "text-slate-500";
-const baseButtonStyle = "w-full text-white text-center";
-const primaryButtonStyle = `${baseButtonStyle} bg-blue-500`;
-const secondaryButtonStyle = `${baseButtonStyle} bg-slate-400`;
-const selectInputStyle = "w-full p-2 rounded-sm bg-slate-200";
-
-const numberExp = /^[0-9.]+$/.source;
-const stringExp = /^[a-zA-Z0-9\s!@#$%^&?(),.]+$/.source;
-const colorExp = /^#[0-9a-fA-F]{6}$/.source;
-
-const defaultValues = {
-  standardDelay: 2000,
-};
-
-type PermittedEntries =
-  | "documentTitle"
-  | "imageNumber"
-  | "light"
-  | "dark"
-  | keyof Pick<ReactPDF.PageProps, "size" | "orientation">
-  | keyof Omit<
-      QRCodeRenderersOptions,
-      "color" | "version" | "toSJISFunc" | "errorCorrectionLevel"
-    >;
-
-type ConfigListType = {
-  [key in PermittedEntries]: JSX.IntrinsicElements["input"];
-};
+import { defaultValues, pageSizes } from "presets";
+import {
+  ConfigListType,
+  ControlPanelProps,
+  OnChangeEvent,
+} from "./ControlPanel.types";
+import { DocumentOptions } from "App.types";
+import { formInputStyles, headerStyles } from "theme/styles";
 
 export const inputElementsConfig: ConfigListType = {
   width: {
@@ -82,11 +60,11 @@ export const inputElementsConfig: ConfigListType = {
   },
   dark: {
     pattern: colorExp,
-    className: colorPickerLabelStyle,
+    className: formInputStyles.colorPickerLabel,
   },
   light: {
     pattern: colorExp,
-    className: colorPickerLabelStyle,
+    className: formInputStyles.colorPickerLabel,
   },
   size: {
     value: "A4",
@@ -95,72 +73,6 @@ export const inputElementsConfig: ConfigListType = {
     value: "portrait",
   },
 };
-
-const pageSizes = [
-  "4A0",
-  "2A0",
-  "A0",
-  "A1",
-  "A2",
-  "A3",
-  "A4",
-  "A5",
-  "A6",
-  "A7",
-  "A8",
-  "A9",
-  "A10",
-  "B0",
-  "B1",
-  "B2",
-  "B3",
-  "B4",
-  "B5",
-  "B6",
-  "B7",
-  "B8",
-  "B9",
-  "B10",
-  "C0",
-  "C1",
-  "C2",
-  "C3",
-  "C4",
-  "C5",
-  "C6",
-  "C7",
-  "C8",
-  "C9",
-  "C10",
-  "RA0",
-  "RA1",
-  "RA2",
-  "RA3",
-  "RA4",
-  "SRA0",
-  "SRA1",
-  "SRA2",
-  "SRA3",
-  "SRA4",
-  "EXECUTIVE",
-  "FOLIO",
-  "LEGAL",
-  "LETTER",
-  "TABLOID",
-  "ID1",
-] as const;
-
-type ControlPanelProps = {
-  qrOptions: QRCodeRenderersOptions;
-  setQrOptions: (options: QRCodeRenderersOptions) => void;
-  documentOptions: DocumentOptions;
-  setDocumentOptions: (options: DocumentOptions) => void;
-  pageOptions: ReactPDF.PageProps;
-  setPageOptions: (options: ReactPDF.PageProps) => void;
-};
-
-type SupportedElements = HTMLInputElement | HTMLSelectElement;
-type OnChangeEvent = ChangeEvent<SupportedElements>;
 
 function handleChange(
   event: OnChangeEvent,
@@ -261,13 +173,13 @@ export default function ControlPanel({
   return (
     <div className="flex flex-col w-full p-4 xl:w-fit lg:w-1/3 md:w-2/5 sm:w-1/2 sm:h-screen sm:overflow-y-auto gap-4 relative">
       <form onSubmit={handleSubmit} onReset={onReset}>
-        <h1 className={h1style}>
+        <h1 className={headerStyles.h1}>
           <FontAwesomeIcon icon={faQrcode} className="w-6" /> QR Foundry
         </h1>
-        <h2 className={h2style}>Opciones</h2>
-        <div className={sectionStyle}>
-          <h3 className={h3style}>Documento</h3>
-          <fieldset className={`${fieldsetStyle} flex flex-col`}>
+        <h2 className={headerStyles.h2}>Opciones</h2>
+        <div className={formInputStyles.section}>
+          <h3 className={headerStyles.h3}>Documento</h3>
+          <fieldset className={`${formInputStyles.fieldset} flex flex-col`}>
             <InputField
               required
               label="Imágenes generadas"
@@ -278,7 +190,9 @@ export default function ControlPanel({
               onChange={handleChangeDocumentOptions}
               validator={numberValidator}
             />
-            <legend className={fieldsetLegendStyle}>Propiedades</legend>
+            <legend className={formInputStyles.fieldsetLegend}>
+              Propiedades
+            </legend>
             <InputField
               label="Título"
               name="documentTitle"
@@ -288,13 +202,13 @@ export default function ControlPanel({
               onChange={handleChangeDocumentOptions}
               validator={stringValidator}
             />
-            <label className={labelStyle} htmlFor="size">
+            <label className={formInputStyles.label} htmlFor="size">
               Tamaño de página
               <select
                 id="size"
                 value={internalPageOptions.size?.toString()}
                 onChange={handleChangePageOptions}
-                className={selectInputStyle}
+                className={formInputStyles.select}
               >
                 {pageSizes.map((size) => (
                   <option key={size} value={size}>
@@ -303,13 +217,13 @@ export default function ControlPanel({
                 ))}
               </select>
             </label>
-            <label className={labelStyle} htmlFor="orientation">
+            <label className={formInputStyles.label} htmlFor="orientation">
               Orientación de página
               <select
                 id="orientation"
                 value={internalPageOptions.orientation}
                 onChange={handleChangePageOptions}
-                className={selectInputStyle}
+                className={formInputStyles.select}
               >
                 <option value="portrait">Retrato</option>
                 <option value="landscape">Panorama</option>
@@ -317,10 +231,12 @@ export default function ControlPanel({
             </label>
           </fieldset>
         </div>
-        <div className={sectionStyle}>
-          <h3 className={h3style}>Códigos QR</h3>
-          <fieldset className={`${fieldsetStyle} flex`}>
-            <legend className={fieldsetLegendStyle}>Dimensiones</legend>
+        <div className={formInputStyles.section}>
+          <h3 className={headerStyles.h3}>Códigos QR</h3>
+          <fieldset className={`${formInputStyles.fieldset} flex`}>
+            <legend className={formInputStyles.fieldsetLegend}>
+              Dimensiones
+            </legend>
             <InputField
               label="Tamaño (px)"
               required
@@ -341,8 +257,10 @@ export default function ControlPanel({
               validator={numberValidator}
             />
           </fieldset>
-          <fieldset className={`${fieldsetStyle} flex flex-col`}>
-            <legend className={fieldsetLegendStyle}>Resolución</legend>
+          <fieldset className={`${formInputStyles.fieldset} flex flex-col`}>
+            <legend className={formInputStyles.fieldsetLegend}>
+              Resolución
+            </legend>
             <InputField
               name="scale"
               type="range"
@@ -360,14 +278,14 @@ export default function ControlPanel({
               validator={numberValidator}
             />
           </fieldset>
-          <fieldset className={fieldsetStyle}>
-            <legend className={fieldsetLegendStyle}>Colores</legend>
+          <fieldset className={formInputStyles.fieldset}>
+            <legend className={formInputStyles.fieldsetLegend}>Colores</legend>
             <label htmlFor="dark">
               Texto
               <input
                 id="dark"
                 type="color"
-                className={colorPickerInputStyle}
+                className={formInputStyles.input}
                 value={internalQrOptions.color?.dark}
                 onChange={handleColorChange("dark")}
               />
@@ -386,7 +304,7 @@ export default function ControlPanel({
               <input
                 id="light"
                 type="color"
-                className={colorPickerInputStyle}
+                className={formInputStyles.input}
                 value={internalQrOptions.color?.light}
                 onChange={handleColorChange("light")}
               />
@@ -401,8 +319,10 @@ export default function ControlPanel({
               />
             </label>
           </fieldset>
-          <fieldset className={`${fieldsetStyle} flex flex-col`}>
-            <legend className={fieldsetLegendStyle}>Optimización</legend>
+          <fieldset className={`${formInputStyles.fieldset} flex flex-col`}>
+            <legend className={formInputStyles.fieldsetLegend}>
+              Optimización
+            </legend>
             <label htmlFor="errorCorrectionLevel">
               Nivel de corrección de error
               <details
@@ -422,7 +342,7 @@ export default function ControlPanel({
                 id="errorCorrectionLevel"
                 value={internalQrOptions.errorCorrectionLevel}
                 onChange={handleChangeQrOptions}
-                className={selectInputStyle}
+                className={formInputStyles.select}
               >
                 <option value="L">Bajo (~7%)</option>
                 <option value="M">Medio (~15%)</option>
@@ -433,10 +353,10 @@ export default function ControlPanel({
           </fieldset>
 
           <div className="flex gap-1">
-            <button type="reset" className={secondaryButtonStyle}>
+            <button type="reset" className={formInputStyles.secondaryButton}>
               Reset
             </button>
-            <button type="submit" className={primaryButtonStyle}>
+            <button type="submit" className={formInputStyles.primaryButton}>
               Generar
             </button>
           </div>
