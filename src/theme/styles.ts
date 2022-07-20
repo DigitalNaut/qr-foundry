@@ -59,7 +59,6 @@ export const createStyles: () => Record<string, Style> = () =>
       gap: "1rem",
       justifyItems: "center",
       alignItems: "center",
-      backgroundColor: "yellow",
     },
     section: {
       display: "flex",
@@ -68,7 +67,6 @@ export const createStyles: () => Record<string, Style> = () =>
       justifyContent: "center",
       alignItems: "center",
       width: "100%",
-      backgroundColor: "blue",
     },
     header: {
       width: "100%",
