@@ -1,6 +1,6 @@
 // Source: https://blog.logrocket.com/generating-pdfs-react/
 
-import {
+import ReactPDF, {
   Document,
   Page,
   Text,
@@ -11,9 +11,10 @@ import {
 } from "@react-pdf/renderer";
 import { useEffect, useLayoutEffect, useState } from "react";
 import type { Style } from "@react-pdf/types/style";
-import createQRImage from "./QRCode";
 import { QRCodeRenderersOptions } from "qrcode";
 
+import colors from "theme/colors.module.css";
+import createQRImage from "./QRCode";
 const vw = () =>
   Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
 const vh = () =>
@@ -29,7 +30,7 @@ const createStyles: () => Record<string, Style> = () =>
     },
     page: {
       marginTop: 10,
-      color: "#333",
+      color: colors.blue500,
       display: "flex",
       flexDirection: "column",
       gap: "1rem",
@@ -40,6 +41,7 @@ const createStyles: () => Record<string, Style> = () =>
       flexDirection: "row",
       flexWrap: "wrap",
       justifyContent: "center",
+      width: "100%",
     },
     image: {
       display: "flex",
@@ -47,13 +49,13 @@ const createStyles: () => Record<string, Style> = () =>
       alignItems: "center",
     },
     caption: {
+      color: colors.gray400,
       marginBottom: 3,
       fontSize: 9,
     },
     break: {
       width: "100%",
-      height: "5em",
-      backgroundColor: "#333",
+      height: "1em",
     },
   });
 
@@ -61,6 +63,7 @@ type BasicDocumentProps = {
   title: string;
   qrCodes: string[];
   qrOptions: QRCodeRenderersOptions;
+  pageOptions?: ReactPDF.PageProps;
 };
 
 // Create Document Component
@@ -68,6 +71,7 @@ export default function BasicDocument({
   title,
   qrCodes,
   qrOptions,
+  pageOptions: pageProps,
 }: BasicDocumentProps) {
   const [styles, setStyles] = useState(createStyles());
   const [qrImages, setQRImages] =
@@ -100,7 +104,7 @@ export default function BasicDocument({
       {/* Start of the document*/}
       <Document>
         {/*render a single page*/}
-        <Page size="A4" style={styles.page}>
+        <Page {...pageProps} style={styles.page}>
           <View style={styles.section}>
             <Text>{title}</Text>
           </View>
