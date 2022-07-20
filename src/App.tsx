@@ -7,11 +7,7 @@ import "App.css";
 import colors from "theme/colors.module.css";
 import QRGenerator from "components/QRGenerator";
 import ControlPanel from "components/ControlPanel";
-
-export type DocumentOptions = {
-  imageCount: number;
-  documentTitle: string;
-};
+import { DocumentOptions } from "App.types";
 
 const defaultPageOptions: ReactPDF.PageProps = {
   size: "A4",
@@ -33,7 +29,7 @@ const defaultQRCodeOptions: QRCodeRenderersOptions = {
   errorCorrectionLevel: "M",
   scale: 128 / 100,
   color: {
-    dark: colors.gray800,
+    dark: colors.slate800,
     light: colors.white,
   },
 };

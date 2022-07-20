@@ -1,7 +1,7 @@
 :export {
   white: theme("colors.white");
-  gray400: theme("colors.gray.400");
-  gray900: theme("colors.gray.900");
-  gray800: theme("colors.gray.800");
+  slate4\00: theme("colors.gray.400");
+  slate9\00: theme("colors.gray.900");
+  slate8\00: theme("colors.gray.800");
   blue500: theme("colors.blue.500");
 }
