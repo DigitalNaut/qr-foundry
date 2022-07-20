@@ -1,3 +1,7 @@
+export const numberExp = /^[0-9.]+$/.source;
+export const stringExp = /^[a-zA-Z0-9\s!@#$%^&?(),.]+$/.source;
+export const colorExp = /^#[0-9a-fA-F]{6}$/.source;
+
 export const numberValidator = (config: JSX.IntrinsicElements["input"]) => {
   const { value } = config;
   if (config.type !== "number") return "";
@@ -33,4 +37,4 @@ export const colorValidator = (config: JSX.IntrinsicElements["input"]) => {
   if (valueString.length !== 7) return "Must be a valid color";
 
   return "";
-}
+};

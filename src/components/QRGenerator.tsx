@@ -1,70 +1,18 @@
 // Source: https://blog.logrocket.com/generating-pdfs-react/
 
-import ReactPDF, {
+import {
   Document,
   Page,
   Text,
   View,
   Image,
-  StyleSheet,
   PDFViewer,
 } from "@react-pdf/renderer";
 import { useEffect, useLayoutEffect, useState } from "react";
-import type { Style } from "@react-pdf/types/style";
-import { QRCodeRenderersOptions } from "qrcode";
+import { createStyles } from "theme/styles";
 
-import colors from "theme/colors.module.css";
-import createQRImage from "./QRCode";
-const vw = () =>
-  Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
-const vh = () =>
-  Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
-
-// Create styles
-const createStyles: () => Record<string, Style> = () =>
-  StyleSheet.create({
-    viewer: {
-      width: vw(), //the pdf viewer will take up all of the width and height
-      height: vh(),
-      boxSizing: "border-box",
-    },
-    page: {
-      marginTop: 10,
-      color: colors.blue500,
-      display: "flex",
-      flexDirection: "column",
-      gap: "1rem",
-      alignItems: "center",
-    },
-    section: {
-      display: "flex",
-      flexDirection: "row",
-      flexWrap: "wrap",
-      justifyContent: "center",
-      width: "100%",
-    },
-    image: {
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
-    },
-    caption: {
-      color: colors.gray400,
-      marginBottom: 3,
-      fontSize: 9,
-    },
-    break: {
-      width: "100%",
-      height: "1em",
-    },
-  });
-
-type BasicDocumentProps = {
-  title: string;
-  qrCodes: string[];
-  qrOptions: QRCodeRenderersOptions;
-  pageOptions?: ReactPDF.PageProps;
-};
+import createQRImage from "./QRCodeCreator";
+import { BasicDocumentProps } from "./QRGenerator.types";
 
 // Create Document Component
 export default function BasicDocument({
@@ -106,7 +54,7 @@ export default function BasicDocument({
         {/*render a single page*/}
         <Page {...pageProps} style={styles.page}>
           <View style={styles.section}>
-            <Text>{title}</Text>
+            <Text style={styles.header}>{title}</Text>
           </View>
 
           <View style={styles.section}>
