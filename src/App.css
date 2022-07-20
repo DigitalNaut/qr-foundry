@@ -1,3 +1,4 @@
-.App {
-  text-align: center;
+label {
+  display: flex;
+  flex-direction: column;
 }
