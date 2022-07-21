@@ -373,7 +373,7 @@ export default function ControlPanel({
               Reset
             </button>
             <button type="submit" className={formInputStyles.primaryButton}>
-              Generar
+              Generar PDF
             </button>
           </div>
         </div>

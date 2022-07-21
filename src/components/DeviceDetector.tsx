@@ -3,7 +3,11 @@ import { formInputStyles } from "theme/styles";
 import * as rdd from "react-device-detect";
 import { DeviceDetectorProps, DeviceProps } from "./DeviceDetector.types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSpinner } from "@fortawesome/free-solid-svg-icons";
+import {
+  faDownload,
+  faFileDownload,
+  faSpinner,
+} from "@fortawesome/free-solid-svg-icons";
 
 export function DeviceDetector(props: DeviceProps) {
   return <>{props.children(rdd)}</>;
@@ -34,8 +38,17 @@ export default function PDFDisplay({
                       Generando PDF...
                     </div>
                   ) : (
-                    <div className={`${formInputStyles.primaryButton} p-4`}>
-                      Descargar PDF
+                    <div
+                      className={`${formInputStyles.primaryButton} flex flex-col p-6`}
+                    >
+                      <span className="text-xl">
+                        <FontAwesomeIcon icon={faDownload} />
+                        &nbsp;Descargar PDF
+                      </span>
+                      <span className="text-blue-300">
+                        <FontAwesomeIcon icon={faFileDownload} />
+                        &nbsp;{filename}
+                      </span>
                     </div>
                   ) // <ModalPDFGenerated />
               }
