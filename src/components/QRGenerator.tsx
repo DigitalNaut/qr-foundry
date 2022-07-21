@@ -6,34 +6,22 @@ import {
   Text,
   View,
   Image,
-  PDFViewer,
 } from "@react-pdf/renderer";
-import { useEffect, useLayoutEffect, useState } from "react";
-import { createStyles } from "theme/styles";
+import { useEffect, useState } from "react";
 
 import createQRImage from "./QRCodeCreator";
 import { BasicDocumentProps } from "./QRGenerator.types";
 
 // Create Document Component
-export default function BasicDocument({
+export default function QRDocument({
   title,
   qrCodes,
   qrOptions,
-  pageOptions: pageProps,
+  styles,
+  pageProps,
 }: BasicDocumentProps) {
-  const [styles, setStyles] = useState(createStyles());
   const [qrImages, setQRImages] =
     useState<Awaited<ReturnType<typeof createQRImage>>[]>();
-
-  useLayoutEffect(() => {
-    window.onresize = () => {
-      setStyles(createStyles());
-    };
-
-    return () => {
-      window.onchange = null;
-    };
-  }, []);
 
   useEffect(() => {
     (async function createQRCodes() {
@@ -48,36 +36,32 @@ export default function BasicDocument({
   }, [qrCodes, qrOptions]);
 
   return (
-    <PDFViewer style={styles.viewer}>
-      {/* Start of the document*/}
-      <Document>
-        {/*render a single page*/}
-        <Page {...pageProps} style={styles.page}>
-          <View style={styles.section}>
-            <Text style={styles.header}>{title}</Text>
-          </View>
+    <Document>
+      <Page {...pageProps} style={styles.page}>
+        <View style={styles.section}>
+          <Text style={styles.header}>{title}</Text>
+        </View>
 
-          <View style={styles.section}>
-            {qrImages?.map((image, index) => {
-              const code = qrCodes[index];
-              if (!image) return null;
-              else
-                return (
-                  <View style={styles.image} key={code}>
-                    <Image
-                      src={image}
-                      style={{
-                        width: qrOptions.width,
-                      }}
-                    />
-                    <Text style={styles.caption}>{code}</Text>
-                    <View style={styles.break} />
-                  </View>
-                );
-            })}
-          </View>
-        </Page>
-      </Document>
-    </PDFViewer>
+        <View style={styles.section}>
+          {qrImages?.map((image, index) => {
+            const code = qrCodes[index];
+            if (!image) return null;
+            else
+              return (
+                <View style={styles.image} key={code}>
+                  <Image
+                    src={image}
+                    style={{
+                      width: qrOptions.width,
+                    }}
+                  />
+                  <Text style={styles.caption}>{code}</Text>
+                  <View style={styles.break} />
+                </View>
+              );
+          })}
+        </View>
+      </Page>
+    </Document>
   );
 }

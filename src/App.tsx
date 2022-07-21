@@ -8,6 +8,8 @@ import colors from "theme/colors.module.css";
 import QRGenerator from "components/QRGenerator";
 import ControlPanel from "components/ControlPanel";
 import { DocumentOptions } from "App.types";
+import PDFDisplay from "components/DeviceDetector";
+import { createStyles } from "theme/styles";
 
 const defaultPageOptions: ReactPDF.PageProps = {
   size: "A4",
@@ -21,6 +23,7 @@ const defaultPageOptions: ReactPDF.PageProps = {
 const defaultDocumentOptions: DocumentOptions = {
   documentTitle: "QR Code Foundry",
   imageCount: 10,
+  filename: "qr-code-foundry.pdf",
 };
 
 const defaultQRCodeOptions: QRCodeRenderersOptions = {
@@ -35,11 +38,14 @@ const defaultQRCodeOptions: QRCodeRenderersOptions = {
 };
 
 function App() {
+  const [styles] = useState(createStyles());
   const [codes, setCodes] = useState<string[]>([]);
 
   const [qrOptions, setQrOptions] = useState(defaultQRCodeOptions);
   const [pageOptions, setPageOptions] = useState(defaultPageOptions);
-  const [documentOptions, setDocumentOptions] = useState(defaultDocumentOptions);
+  const [documentOptions, setDocumentOptions] = useState(
+    defaultDocumentOptions
+  );
 
   useEffect(() => {
     const generatedCodes = [];
@@ -58,11 +64,18 @@ function App() {
         pageOptions={pageOptions}
         setPageOptions={setPageOptions}
       />
-      <QRGenerator
-        title={documentOptions.documentTitle}
-        qrOptions={qrOptions}
-        qrCodes={codes}
-        pageOptions={pageOptions}
+      <PDFDisplay
+        styles={styles}
+        filename={documentOptions.filename}
+        document={
+          <QRGenerator
+            title={documentOptions.documentTitle}
+            qrOptions={qrOptions}
+            qrCodes={codes}
+            pageProps={pageOptions}
+            styles={styles}
+          />
+        }
       />
     </div>
   );
