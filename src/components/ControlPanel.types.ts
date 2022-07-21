@@ -5,6 +5,7 @@ import { ChangeEvent } from "react";
 
 export type PermittedEntries =
   | "documentTitle"
+  | "filename"
   | "imageNumber"
   | "light"
   | "dark"
