@@ -8,8 +8,8 @@ import colors from "theme/colors.module.css";
 import QRGenerator from "components/QRGenerator";
 import ControlPanel from "components/ControlPanel";
 import { DocumentOptions } from "App.types";
-import PDFDisplay from "components/DeviceDetector";
-import { createStyles } from "theme/styles";
+import PDFDisplay from "components/PDFDisplay";
+import { createStyles } from "theme/computedStyles";
 
 const defaultPageOptions: ReactPDF.PageProps = {
   size: "A4",

@@ -12,10 +12,11 @@ export type InputFieldProps<T = JSX.IntrinsicElements["input"]> = Pick<
   | "onFocus"
   | "required"
   | "aria-describedby"
+  | "className"
 > & {
   innerRef?: LegacyRef<HTMLInputElement>;
   validator: (config: T) => string | Falsy;
-  config: T;
+  inputClassName: T;
   label?: string;
   uppercase?: true;
 };
