@@ -15,15 +15,16 @@ export const headerStyles = {
 const sectionStyle = "flex flex-col gap-2";
 const colorPickerInputStyle = "w-full h-10";
 const colorPickerFieldStyle = "uppercase";
-const fieldsetStyle = "flex border border-solid border-slate-300 p-3 gap-2";
+const fieldsetStyle = "flex flex-col border border-solid border-slate-300 p-3 gap-2";
 const fieldsetLegendStyle = "text-slate-500";
 const baseButtonStyle = "w-full text-white text-center p-2";
+const buttonDisabledStyle = "w-full text-slate-300 bg-slate-400 text-center p-2";
 const primaryButtonStyle = `${baseButtonStyle} bg-blue-500`;
 const secondaryButtonStyle = `${baseButtonStyle} bg-slate-400`;
 const selectInputStyle = "w-full p-2 rounded-sm bg-slate-200";
 
 const labelStyle = "block text-sm font-medium text-slate-700";
-const inputStyle = "w-full roundedpx-2 py-1 bg-slate-200";
+const inputStyle = "w-full rounded-md px-2 py-1 bg-slate-200";
 const requiredStyle = "border border-slate-500";
 const errorStyle = "pt-1 text-red-700";
 
@@ -34,6 +35,7 @@ export const formInputStyles = {
   fieldset: fieldsetStyle,
   fieldsetLegend: fieldsetLegendStyle,
   baseButton: baseButtonStyle,
+  disabledButton: buttonDisabledStyle,
   primaryButton: primaryButtonStyle,
   secondaryButton: secondaryButtonStyle,
   select: selectInputStyle,

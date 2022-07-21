@@ -29,7 +29,7 @@ import {
   OnChangeEvent,
 } from "./ControlPanel.types";
 import { DocumentOptions } from "App.types";
-import { formInputStyles, headerStyles } from "theme/styles";
+import { formInputStyles, headerStyles } from "theme/computedStyles";
 
 export const inputElementsConfig: ConfigListType = {
   width: {
@@ -129,8 +129,8 @@ export default function ControlPanel({
         color: { ...internalQrOptions.color, [color]: event.target.value },
       });
 
-  const onReset = () => {
-    console.log("Reset");
+  const onReset: FormEventHandler<HTMLFormElement> = (event) => {
+    event.preventDefault();
 
     setInternalQrOptions(initialQrOptions);
     setInternalDocumentOptions(internalDocumentOptions);
@@ -158,6 +158,7 @@ export default function ControlPanel({
   const handleSubmit: FormEventHandler<HTMLFormElement> = useCallback(
     (event) => {
       event?.preventDefault();
+      setLoading(true);
       updateDocument(() => {
         setLoading(false);
       });
@@ -191,7 +192,7 @@ export default function ControlPanel({
               label="Imágenes generadas"
               name="imageCount"
               type="number"
-              config={inputElementsConfig.documentTitle}
+              inputClassName={inputElementsConfig.documentTitle}
               value={internalDocumentOptions.imageCount}
               onChange={handleChangeDocumentOptions}
               validator={numberValidator}
@@ -203,7 +204,7 @@ export default function ControlPanel({
               label="Título"
               name="documentTitle"
               type="string"
-              config={inputElementsConfig.documentTitle}
+              inputClassName={inputElementsConfig.documentTitle}
               value={internalDocumentOptions.documentTitle}
               onChange={handleChangeDocumentOptions}
               validator={stringValidator}
@@ -239,7 +240,9 @@ export default function ControlPanel({
         </div>
         <div className={formInputStyles.section}>
           <h3 className={headerStyles.h3}>Códigos QR</h3>
-          <fieldset className={`${formInputStyles.fieldset} flex`}>
+          <fieldset
+            className={`${formInputStyles.fieldset} flex flex-col xs:flex-row`}
+          >
             <legend className={formInputStyles.fieldsetLegend}>
               Dimensiones
             </legend>
@@ -248,7 +251,7 @@ export default function ControlPanel({
               required
               name="width"
               type="number"
-              config={inputElementsConfig.width}
+              inputClassName={inputElementsConfig.width}
               value={internalQrOptions.width}
               onChange={handleChangeQrOptions}
               validator={numberValidator}
@@ -257,34 +260,49 @@ export default function ControlPanel({
               label="Margen (px)"
               name="margin"
               type="number"
-              config={inputElementsConfig.margin}
+              inputClassName={inputElementsConfig.margin}
               value={internalQrOptions.margin}
               onChange={handleChangeQrOptions}
               validator={numberValidator}
             />
           </fieldset>
-          <fieldset className={`${formInputStyles.fieldset} flex flex-col`}>
+          <fieldset className={formInputStyles.fieldset}>
             <legend className={formInputStyles.fieldsetLegend}>
               Resolución
             </legend>
-            <InputField
-              name="scale"
-              type="range"
-              config={inputElementsConfig.scale}
-              value={internalQrOptions.scale}
-              onChange={handleChangeQrOptions}
-              validator={numberValidator}
-            />
-            <InputField
-              name="scale"
-              type="text"
-              config={inputElementsConfig.scale}
-              value={internalQrOptions.scale}
-              onChange={handleChangeQrOptions}
-              validator={numberValidator}
-            />
+            <details
+              id="errorCorrectionLevelDescription"
+              className="bg-slate-200 p-1"
+            >
+              <summary className="text-slate-700 bg-slate-200">
+                ¿Qué es?
+              </summary>
+              <p>Un valor de 1 significa 1 pixel por cuadrito negro.</p>
+            </details>
+            <div className="flex flex-col xs:flex-row gap-1 w-full">
+              <InputField
+                name="scale"
+                type="range"
+                className="w-full"
+                inputClassName={{ ...inputElementsConfig.scale }}
+                value={internalQrOptions.scale}
+                onChange={handleChangeQrOptions}
+                validator={numberValidator}
+              />
+              <InputField
+                name="scale"
+                type="number"
+                className="w-full xs:w-24"
+                inputClassName={inputElementsConfig.scale}
+                value={internalQrOptions.scale}
+                onChange={handleChangeQrOptions}
+                validator={numberValidator}
+              />
+            </div>
           </fieldset>
-          <fieldset className={formInputStyles.fieldset}>
+          <fieldset
+            className={`${formInputStyles.fieldset} flex flex-col xs:flex-row`}
+          >
             <legend className={formInputStyles.fieldsetLegend}>Colores</legend>
             <label htmlFor="dark">
               Texto
@@ -299,7 +317,7 @@ export default function ControlPanel({
                 required
                 name="dark"
                 type="text"
-                config={inputElementsConfig.dark}
+                inputClassName={inputElementsConfig.dark}
                 value={internalQrOptions.color?.dark}
                 onChange={handleColorChange("dark")}
                 validator={colorValidator}
@@ -318,7 +336,7 @@ export default function ControlPanel({
                 required
                 name="light"
                 type="text"
-                config={inputElementsConfig.light}
+                inputClassName={inputElementsConfig.light}
                 value={internalQrOptions.color?.light}
                 onChange={handleColorChange("light")}
                 validator={colorValidator}
@@ -360,9 +378,10 @@ export default function ControlPanel({
 
           <InputField
             label="Nombre del archivo"
+            required
             name="filename"
             type="string"
-            config={inputElementsConfig.filename}
+            inputClassName={inputElementsConfig.filename}
             value={internalDocumentOptions.filename}
             onChange={handleChangeDocumentOptions}
             validator={stringValidator}
