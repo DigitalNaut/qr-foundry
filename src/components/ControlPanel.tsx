@@ -291,7 +291,7 @@ export default function ControlPanel({
               <input
                 id="dark"
                 type="color"
-                className={formInputStyles.input}
+                className={formInputStyles.colorPickerInput}
                 value={internalQrOptions.color?.dark}
                 onChange={handleColorChange("dark")}
               />
@@ -310,7 +310,7 @@ export default function ControlPanel({
               <input
                 id="light"
                 type="color"
-                className={formInputStyles.input}
+                className={formInputStyles.colorPickerInput}
                 value={internalQrOptions.color?.light}
                 onChange={handleColorChange("light")}
               />

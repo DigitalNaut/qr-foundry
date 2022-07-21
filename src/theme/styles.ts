@@ -14,7 +14,7 @@ export const headerStyles = {
 
 const sectionStyle = "flex flex-col gap-2";
 const colorPickerInputStyle = "w-full h-10";
-const colorPickerLabelStyle = "uppercase";
+const colorPickerFieldStyle = "uppercase";
 const fieldsetStyle = "flex border border-solid border-slate-300 p-3 gap-2";
 const fieldsetLegendStyle = "text-slate-500";
 const baseButtonStyle = "w-full text-white text-center p-2";
@@ -30,7 +30,7 @@ const errorStyle = "pt-1 text-red-700";
 export const formInputStyles = {
   section: sectionStyle,
   colorPickerInput: colorPickerInputStyle,
-  colorPickerLabel: colorPickerLabelStyle,
+  colorPickerLabel: colorPickerFieldStyle,
   fieldset: fieldsetStyle,
   fieldsetLegend: fieldsetLegendStyle,
   baseButton: baseButtonStyle,
