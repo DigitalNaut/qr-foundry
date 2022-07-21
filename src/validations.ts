@@ -1,5 +1,5 @@
 export const numberExp = /^[0-9.]+$/.source;
-export const stringExp = /^[a-zA-Z0-9\s!@#$%^&?(),.]+$/.source;
+export const stringExp = /^[a-zA-Z0-9\s!@#$%^&?(),.-]+$/.source;
 export const colorExp = /^#[0-9a-fA-F]{6}$/.source;
 
 export const numberValidator = (config: JSX.IntrinsicElements["input"]) => {

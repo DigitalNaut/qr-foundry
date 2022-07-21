@@ -9,7 +9,7 @@ import {
   useState,
 } from "react";
 import { QRCodeRenderersOptions } from "qrcode";
-
+import { isMobile } from "react-device-detect";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faQrcode, faSpinner } from "@fortawesome/free-solid-svg-icons";
 import InputField from "./InputField";
@@ -71,6 +71,10 @@ export const inputElementsConfig: ConfigListType = {
   },
   orientation: {
     value: "portrait",
+  },
+  filename: {
+    maxLength: 128,
+    pattern: stringExp,
   },
 };
 
@@ -162,6 +166,8 @@ export default function ControlPanel({
   );
 
   useEffect(() => {
+    if (isMobile) return;
+
     const newCountdown = setTimeout(handleSubmit, defaultValues.standardDelay);
     setLoading(true);
 
@@ -351,6 +357,16 @@ export default function ControlPanel({
               </select>
             </label>
           </fieldset>
+
+          <InputField
+            label="Nombre del archivo"
+            name="filename"
+            type="string"
+            config={inputElementsConfig.filename}
+            value={internalDocumentOptions.filename}
+            onChange={handleChangeDocumentOptions}
+            validator={stringValidator}
+          />
 
           <div className="flex gap-1">
             <button type="reset" className={formInputStyles.secondaryButton}>
